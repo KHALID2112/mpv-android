@@ -38,11 +38,8 @@ build_prefix() {
 	msg "Fetching deps"
 	IN_CI=1 ./include/download-deps.sh
 
-	# build everything mpv depends on (but not mpv itself)
-	for x in ${dep_mpv[@]}; do
-		msg "Building $x"
-		./buildall.sh --arch "$ARCH" $x
-	done
+	msg "Compiling"
+	./buildall.sh --only-deps mpv
 
 	if [[ "$CACHE_MODE" == folder && -w "$CACHE_FOLDER" ]]; then
 		msg "Compressing the prefix"
