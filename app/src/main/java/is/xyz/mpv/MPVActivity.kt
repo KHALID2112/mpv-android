@@ -3148,6 +3148,11 @@ private fun openAdvancedMenu(restoreState: StateRestoreCallback) {
     }
 
     override fun event(eventId: Int) {
+        if (eventId == MpvEvent.MPV_EVENT_END_FILE) {
+            psc.eof()
+            updateMediaSession()
+        }
+
         if (eventId == MpvEvent.MPV_EVENT_SHUTDOWN)
             finishWithResult(if (playbackHasStarted) RESULT_OK else RESULT_CANCELED)
 
@@ -3186,7 +3191,9 @@ private fun openAdvancedMenu(restoreState: StateRestoreCallback) {
                 // ignore
             }
 
-            for (c in onloadCommands)
+            val cmds = onloadCommands.toTypedArray()
+            onloadCommands.clear()
+            for (c in cmds)
                 MPVLib.command(c)
 
             // Restore the user's previously chosen subtitle and audio track for this video.
