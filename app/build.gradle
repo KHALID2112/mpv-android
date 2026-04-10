@@ -12,8 +12,8 @@ android {
         minSdkVersion 21
         targetSdk 35
 
-        versionCode 45
-        versionName "2026-03-22-release"
+        versionCode 44
+        versionName "2025-12-27-release"
 
         vectorDrawables.useSupportLibrary = true
     }
@@ -43,7 +43,9 @@ android {
                 if (new File(project.projectDir, "src/main/jniLibs/${abi}").exists())
                     include(abi)
             }
-            universalApk true // build an APK with all ABIs too
+            // Keep outputs minimal: produce only per-ABI APKs.
+            // (With CI configured to build arm64 only, this yields only arm64-v8a.)
+            universalApk false
         }
     }
 
